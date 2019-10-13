@@ -19,10 +19,10 @@ class MoviesController < ApplicationController
     end
 
     if session[:sort_by] == "title"
-       @movies = Movie.re_order("title")
+       @movies = Movie.order("title")
        @sorted_col = "title"
     elsif session[:sort_by] == "date"
-       @movies = Movie.re_order("release_date")
+       @movies = Movie.order("release_date")
        @sorted_col = "date"
     else
        @movies = Movie.all
