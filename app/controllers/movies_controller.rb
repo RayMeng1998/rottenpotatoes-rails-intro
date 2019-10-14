@@ -16,6 +16,8 @@ class MoviesController < ApplicationController
       if session[:sort_by] || session[:ratings]
         redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
       end
+    elsif params[:ratings] == nil && session[:ratings] == nil
+      session[:rating] = @all_ratings
     end
     if params[:sort_by] == "title"
       session[:sort_by] = "title"
@@ -37,16 +39,18 @@ class MoviesController < ApplicationController
       session[:ratings] = params[:ratings]
     end
 
-    checked = Array.new
+    @checked = Array.new
     if session[:ratings]
-      checked = session[:ratings].keys
-      filtered = Array.new
+      @checked = session[:ratings].keys
+      @filtered = Array.new
       @movies.each do |movie|
-        if checked.include? movie[:rating]
-          filtered.push movie
+        if @checked.include? movie[:rating]
+          @filtered.push movie
         end
       end
-      @movies = filtered
+      @movies = @filtered
+    else
+      @checked = @all_ratings
     end
   end
 
