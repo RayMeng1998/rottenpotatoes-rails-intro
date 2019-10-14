@@ -12,6 +12,11 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.ratings
+    if params[:sort_by] == nil && params[:ratings] == nil
+      if session[:sort_by] || session[:ratings]
+        redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
+      end
+    end
     if params[:sort_by] == "title"
       session[:sort_by] = "title"
     elsif params[:sort_by] == "release_date"
@@ -27,6 +32,7 @@ class MoviesController < ApplicationController
     else
        @movies = Movie.all
     end
+
     if !(params[:ratings].nil?)
       session[:ratings] = params[:ratings]
     end
@@ -41,16 +47,6 @@ class MoviesController < ApplicationController
         end
       end
       @movies = filtered
-    end
-
-    if params[:sort_by] == nil || params[:ratings] == nil
-      if session[:sort_by] && session[:ratings]
-        redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
-      elsif session[:sort_by]
-        redirect_to movies_path(:sort_by => session[:sort_by])
-      else
-        redirect_to movies_path(:ratings => session[:ratings])
-      end
     end
   end
 
