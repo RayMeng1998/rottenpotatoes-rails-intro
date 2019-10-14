@@ -42,7 +42,16 @@ class MoviesController < ApplicationController
       end
       @movies = filtered
     end
-    redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
+
+    if params[:sort_by] == nil || params[:ratings] == nil
+      if session[:sort_by] && session[:ratings]
+        redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
+      elsif session[:sort_by]
+        redirect_to movies_path(:sort_by => session[:sort_by])
+      else
+        redirect_to movies_path(:ratings => session[:ratings])
+      end
+    end
   end
 
 
