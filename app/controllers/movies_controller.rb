@@ -35,13 +35,14 @@ class MoviesController < ApplicationController
        @movies = Movie.all
     end
 
+    @checked = Array.new
     if !(params[:ratings].nil?)
       session[:ratings] = params[:ratings]
+      @checked << params[:ratings]
     end
 
-    @checked = Array.new
     if session[:ratings]
-      @checked = session[:ratings].keys
+      @checked = session[:ratings]
       @filtered = Array.new
       @movies.each do |movie|
         if @checked.include? movie[:rating]
