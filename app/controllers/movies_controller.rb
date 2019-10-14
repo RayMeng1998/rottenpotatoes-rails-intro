@@ -31,16 +31,16 @@ class MoviesController < ApplicationController
       session[:ratings] = params[:ratings]
     end
 
-    @checked_keys = Array.new
+    checked_keys = Array.new
     if session[:ratings]
-      @checked_keys = session[:ratings].keys
-      @filtered_movie_list = Array.new
+      checked_keys = session[:ratings].keys
+      @iltered_movie_list = Array.new
       @movies.each do |movie|
-        if @checked_keys.include? movie[:rating]
-          @filtered_movie_list.push movie
+        if checked_keys.include? movie[:rating]
+          filtered_movie_list.push movie
         end
       end
-      @movies = @filtered_movie_list
+      @movies = filtered_movie_list
       session[:ratings] = nil
     else
       @movies = Movie.all
