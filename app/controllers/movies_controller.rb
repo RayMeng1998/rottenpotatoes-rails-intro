@@ -28,19 +28,19 @@ class MoviesController < ApplicationController
     else
        @movies = Movie.all
     end
-    @checked_keys = Array.new
+    checked_keys = Array.new
     if !(params[:ratings].nil?)
       session[:ratings] = params[:ratings]
     end
     if session[:ratings]
-      @checked_keys << session[:ratings].keys
-      @filtered_movie_list = Array.new
-      @movies.each do |movie|
-        if @checked_keys.include? movie[:rating]
-          @filtered_movie_list << movie
+      checked_keys << session[:ratings].keys
+      filtered_movie_list = Array.new
+      Movie.all.each do |movie|
+        if checked_keys.include? movie[:rating]
+          filtered_movie_list << movie
         end
       end
-      @movies = @filtered_movie_list
+      @movies = filtered_movie_list
     end
     # if(params[:sort_by] == nil && params[:ratings] == nil)
     #   if(session[:sort_by] || session[:ratings])
