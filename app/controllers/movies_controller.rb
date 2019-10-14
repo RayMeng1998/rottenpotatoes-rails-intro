@@ -12,7 +12,6 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.ratings
-    @movies = Movie.all
     if params[:sort_by] == "title"
       session[:sort_by] = "title"
     elsif params[:sort_by] == "release_date"
@@ -28,19 +27,26 @@ class MoviesController < ApplicationController
     else
        @movies = Movie.all
     end
-    checked_keys = Array.new
     if !(params[:ratings].nil?)
       session[:ratings] = params[:ratings]
     end
+
+    @checked_keys = Array.new
     if session[:ratings]
-      checked_keys << session[:ratings].keys
-      filtered_movie_list = Array.new
-      Movie.all.each do |movie|
-        if checked_keys.include? movie[:rating]
-          filtered_movie_list << movie
+      @checked_keys = session[:ratings].keys
+      @filtered_movie_list = Array.new
+      @movies.each do |movie|
+        if @checked_keys.include? movie[:rating]
+          @filtered_movie_list.push movie
         end
       end
-      @movies = filtered_movie_list
+      @movies = @filtered_movie_list
+    end
+
+    if(params[:sort_by] == nil  && params[:ratings] == nil)
+      if(session[:sort_by] || session[:ratings])
+        redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
+      end
     end
     # if(params[:sort_by] == nil && params[:ratings] == nil)
     #   if(session[:sort_by] || session[:ratings])
