@@ -34,7 +34,7 @@ class MoviesController < ApplicationController
     checked_keys = Array.new
     if session[:ratings]
       checked_keys = session[:ratings].keys
-      @iltered_movie_list = Array.new
+      filtered_movie_list = Array.new
       @movies.each do |movie|
         if checked_keys.include? movie[:rating]
           filtered_movie_list.push movie
