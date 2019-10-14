@@ -4,7 +4,7 @@
   Include:
   - @all_ratings.each do |rating|
     = rating
-    - if !(@checked_keys.empty?)
+    - if !(@checked_keys == nil)
       - checked = @checked_keys.include?(rating)? true : false
     - else
       - checked = true
